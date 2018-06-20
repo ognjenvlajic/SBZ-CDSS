@@ -1,0 +1,24 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "../node_modules/bootswatch/dist/litera/variables";
+@import "../node_modules/bootstrap/scss/bootstrap";
+@import "../node_modules/bootswatch/dist/litera/bootswatch";
+@import "~ngx-toastr/toastr";
+
+.box {
+    border-radius: 20px;
+    background-color: $gray-300;
+    padding: 30px;
+}
+
+.center {
+    text-align: center
+}
+
+button {
+    cursor: not-allowed;
+}
+
+.line-breaker {
+    white-space: pre-wrap;
+}

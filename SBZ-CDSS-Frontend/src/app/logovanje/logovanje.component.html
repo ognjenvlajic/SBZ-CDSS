@@ -1,0 +1,22 @@
+<div class="container">
+  <form class="loginForm box" name="loginForm" (ngSubmit)="logovanje()" novalidate>
+    <fieldset>
+      <legend>Logovanje</legend>
+      <div class="alert alert-dismissible alert-danger" *ngIf="greska">
+        <strong>{{greska}}</strong>
+      </div>
+      <div class="form-group">
+        <label for="email" class="control-label">Email</label>
+        <input type="text" class="form-control input-lg" id="email" name="email" placeholder="Email" [(ngModel)]="email" required>
+      </div>
+      <div class="form-group">
+        <label for="lozinka" class="control-label">Lozinka</label>
+        <input type="password" class="form-control input-lg" id="lozinka" name="lozinka" placeholder="Lozinka" [(ngModel)]="lozinka" required>
+      </div>
+      <div class="form-group center">
+        <button type="submit" class="btn btn-primary">Ulogujte se</button>&nbsp;&nbsp;
+        <br><br>
+      </div>
+    </fieldset>
+  </form>
+</div>
