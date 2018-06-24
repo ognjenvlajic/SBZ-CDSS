@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="col-md-12">
+    <div class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed-top">
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item" [class.active]="funkcionalnost === 'rezoner'">
+            <button class="btn" [class.btn-primary]="funkcionalnost === 'rezoner'" [class.btn-outline-primary]="funkcionalnost !== 'rezoner'" 
+            style="cursor: pointer;" (click)="clickedFun('rezoner')"><b>Rezoner</b></button>
+          </li>
+          <li class="nav-item" [class.active]="funkcionalnost === 'upitBolest'">
+            <button class="btn" [class.btn-primary]="funkcionalnost === 'upitBolest'" [class.btn-outline-primary]="funkcionalnost !== 'upitBolest'" 
+            style="cursor: pointer;" (click)="clickedFun('upitBolest')"><b>Upit za bolest</b></button>
+          </li>
+          <li class="nav-item" [class.active]="funkcionalnost === 'upitSimptomi'">
+            <button class="btn" [class.btn-primary]="funkcionalnost === 'upitSimptomi'" [class.btn-outline-primary]="funkcionalnost !== 'upitSimptomi'" 
+            style="cursor: pointer;" (click)="clickedFun('upitSimptomi')"><b>Upit za simptome</b></button>
+          </li>
+          <li class="nav-item" [class.active]="funkcionalnost === 'licnaDijagnoza'">
+            <button class="btn" [class.btn-primary]="funkcionalnost === 'licnaDijagnoza'" [class.btn-outline-primary]="funkcionalnost !== 'licnaDijagnoza'" 
+            style="cursor: pointer;" (click)="clickedFun('licnaDijagnoza')"><b>Licna dijagnoza</b></button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="col-md-12">
+    <div class="row">
+      <h4 class="col-md-8" *ngIf="!pacijent">Niste izabrali pacijenta!</h4>
+      <button type="button" class="btn btn-primary" (click)="postaviPacijenta()" *ngIf="!pacijent">Izaberi pacijenta</button>
+      <h4 class="col-md-8" *ngIf="pacijent">Izabrani pacijent: {{pacijent.ime}} {{pacijent.prezime}} <b>(JMBG: {{pacijent.jmbg}})</b></h4>
+      <button type="button" class="btn btn-primary" (click)="postaviPacijenta()" *ngIf="pacijent">Zameni pacijenta</button>
+    </div>
+  </div>
+  <br>
+  <br>
+  <router-outlet *ngIf="pacijent"></router-outlet>
+</div>
+  

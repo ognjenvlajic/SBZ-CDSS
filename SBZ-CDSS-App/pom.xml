@@ -17,7 +17,8 @@
 	  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	  <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	  <java.version>1.8</java.version>
-	  <!--kie.version>6.5.0.Final</kie.version-->
+	  <jjwt.version>0.6.0</jjwt.version>
+	  <kie.version>6.5.0.Final</kie.version>
   </properties>
   
   <!-- Transitively bring in the Spring IO Platform Bill-of-Materials `pom.xml` -->
@@ -46,10 +47,10 @@
 		  <groupId>org.springframework.boot</groupId>
 		  <artifactId>spring-boot-starter-aop</artifactId>
 	  </dependency>
-  	  <!--dependency>
+  	  <dependency>
 		  <groupId>org.springframework.boot</groupId>
 		  <artifactId>spring-boot-starter-security</artifactId>
-	  </dependency-->
+	  </dependency>
 	  <dependency>
       	  <groupId>org.springframework.boot</groupId>
       	  <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -59,7 +60,16 @@
 	      <artifactId>h2</artifactId>
 		  <scope>runtime</scope>
 	  </dependency>
-	  <!--dependency>
+	  <dependency>
+		  <groupId>io.jsonwebtoken</groupId>
+		  <artifactId>jjwt</artifactId>
+		  <version>${jjwt.version}</version>
+	  </dependency>
+	  <dependency>
+		  <groupId>org.springframework.mobile</groupId>
+		  <artifactId>spring-mobile-device</artifactId>
+	  </dependency>
+	  <dependency>
 		  <groupId>org.kie</groupId>
 		  <artifactId>kie-ci</artifactId>
 		  <version>${kie.version}</version>
@@ -70,11 +80,11 @@
           <version>${kie.version}</version>
       </dependency>
 	  <dependency>
-	  	  <groupId>drools-spring-v2</groupId>
-	  	  <artifactId>drools-spring-v2-kjar</artifactId>
+	  	  <groupId>SBZ-CDSS</groupId>
+	  	  <artifactId>SBZ-CDSS-Kjar</artifactId>
 	  	  <type>jar</type>
 	      <version>0.0.1-SNAPSHOT</version>
-  	  </dependency-->
+  	  </dependency>
   	  <!--dependency>
           <groupId>commons-logging</groupId>
           <artifactId>commons-logging</artifactId>

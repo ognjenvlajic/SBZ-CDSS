@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AdministratorService } from '../../../services/administrator/administrator.service';
+import { UtilService } from '../../../services/util/util.service';
+import { Lekar } from '../../../model/Lekar';
+import { Pager } from '../../../model/Pager';
 
 @Component({
     selector: 'app-pregled-lekara',
@@ -7,16 +11,17 @@ import { ActivatedRoute } from '@angular/router';
     styleUrls: ['./pregled-lekara.component.scss']
 })
 export class PregledLekaraComponent implements OnInit {
-    stanari: any[];
-    pager: any;
-    pretraga: string;
+    
+    lekari: Lekar[];
+    pager: Pager;
+    filter: string;
     pretragaPolje: string;
     pretragaIzvrsena: boolean;
 
     constructor(
         private route: ActivatedRoute,
-        //private administratorService: AdministratorService,
-        //private utilService: UtilService
+        private administratorService: AdministratorService,
+        private utilService: UtilService
     ) { }
 
     ngOnInit() {
@@ -33,14 +38,13 @@ export class PregledLekaraComponent implements OnInit {
     }
 
     izlistajLekare() {
-        /*this.administratorService.getStanari(this.pager.trenutnaStrana-1, this.pager.velicinaStrane, this.filter).subscribe(
+        this.administratorService.lekari(this.pager.trenutnaStrana-1, this.pager.velicinaStrane, this.filter).subscribe(
             res => {
-                this.stanari = res.body as Korisnik[];
+                this.lekari = res.body as Lekar[];
                 this.pager.ukupnoStrana = Number(res.headers.get('Ukupno-Strana'));
                 this.pager = this.utilService.getPager(this.pager);
-                this.pretragaIzvresna = true;
             }
-        )*/
+        )
     }
 
     promeniVelicinu() {
@@ -48,9 +52,10 @@ export class PregledLekaraComponent implements OnInit {
         this.izlistajLekare();
     }
 
-    filtriraj() {
-        this.pretraga = this.pretragaPolje;
+    pretraga() {
+        this.filter = this.pretragaPolje;
         this.pager.trenutnaStrana = 1;
+        this.pretragaIzvrsena = true;
         this.izlistajLekare();
     }
 

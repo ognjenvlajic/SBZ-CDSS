@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Lek implements Serializable {
@@ -29,16 +29,24 @@ public class Lek implements Serializable {
 	@Column(nullable = false)
 	private Grupa grupa;
 	
-	@ElementCollection
-	private List<String> sastojci;
+	@ManyToMany 
+	private List<Sastojak> sastojci;
 	
 	public Lek() {}
 
-	public Lek(String naziv, Grupa grupa, List<String> sastojci) {
+	public Lek(String naziv, Grupa grupa, List<Sastojak> sastojci) {
 		super();
 		this.naziv = naziv;
 		this.grupa = grupa;
 		this.sastojci = sastojci;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getNaziv() {
@@ -57,11 +65,11 @@ public class Lek implements Serializable {
 		this.grupa = grupa;
 	}
 
-	public List<String> getSastojci() {
+	public List<Sastojak> getSastojci() {
 		return sastojci;
 	}
 
-	public void setSastojci(List<String> sastojci) {
+	public void setSastojci(List<Sastojak> sastojci) {
 		this.sastojci = sastojci;
 	}
 

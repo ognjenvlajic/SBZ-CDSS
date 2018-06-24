@@ -14,18 +14,14 @@ public interface AdministratorService {
 	Lekar dodajLekara(Lekar lekar);
 	Lekar lekar(Long id);
 	Page<Lekar> lekari(Pageable pageable, String filter);
-	Lekar izmeniLekara(Long id, Lekar lekar);
 	
 	Pacijent dodajPacijenta(Pacijent pacijent);
 	Pacijent pacijent(Long id);
 	Page<Pacijent> pacijenti(Pageable pageable, String filter);
 	Pacijent izmeniPacijenta(Long id, Pacijent pacijent);
-	void obrisiPacijenta(Long id);
 	
 	Simptom dodajSimptom(Simptom simptom);
-	Simptom simptom(Long id);
-	Page<Bolest> simptomi(Pageable pageable, String filter);
-	Bolest izmeniSimptom(Long id, Simptom simptom);
+	Page<Simptom> simptomi(Pageable pageable, String filter);
 	void obrisiSimptom(Long id);
 	
 	Bolest dodajBolest(Bolest bolest);

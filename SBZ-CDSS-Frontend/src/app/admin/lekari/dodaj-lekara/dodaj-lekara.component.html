@@ -1,53 +1,53 @@
 <div class="row justify-content-md-center">
-    <form class="col-md-6 box" [formGroup]="form" (ngSubmit)="dodajLekara()">
-      <fieldset>
-        <div class="form-group row">
-          <label for="email" class="control-label col-md-3"><b>Email</b></label>
-          <div class="col-md-9">
-            <input type="text" class="form-control" id="email" name="email" placeholder="Email" [formControl]="form.controls['email']" 
-            [class.is-invalid]="!form.controls['email'].valid && (form.controls['email'].touched || form.controls['email'].dirty)">
-            <div *ngIf="form.controls['email'].hasError('required') && (form.controls['email'].touched || form.controls['email'].dirty)" 
-            class="invalid-feedback">Ovo polje je obavezno!</div>
-            <div *ngIf="form.controls['email'].hasError('pattern') && (form.controls['email'].touched || form.controls['email'].dirty)" 
-            class="invalid-feedback">Neispravna email adresa!</div>
-          </div>
+  <form class="col-md-6 box" [formGroup]="form" (ngSubmit)="dodajLekara()">
+    <fieldset>
+      <div class="form-group row">
+        <label for="email" class="control-label col-md-3"><b>Email</b></label>
+        <div class="col-md-9">
+          <input type="text" class="form-control" id="email" name="email" placeholder="Email" [formControl]="form.controls['email']" 
+          [class.is-invalid]="!form.controls['email'].valid && (form.controls['email'].touched || form.controls['email'].dirty)">
+          <div *ngIf="form.controls['email'].hasError('required') && (form.controls['email'].touched || form.controls['email'].dirty)" 
+          class="invalid-feedback">Ovo polje je obavezno!</div>
+          <div *ngIf="form.controls['email'].hasError('pattern') && (form.controls['email'].touched || form.controls['email'].dirty)" 
+          class="invalid-feedback">Neispravna email adresa!</div>
         </div>
-        <div class="form-group row">
-          <label for="lozinka" class="control-label col-md-3"><b>Lozinka</b></label>
-          <div class="col-md-9">
-            <input type="text" class="form-control" id="lozinka" name="lozinka" placeholder="Lozinka" [formControl]="form.controls['lozinka']" 
-            [class.is-invalid]="!form.controls['lozinka'].valid && (form.controls['lozinka'].touched || form.controls['lozinka'].dirty)">
-            <div *ngIf="form.controls['lozinka'].hasError('required') && (form.controls['lozinka'].touched || form.controls['lozinka'].dirty)" 
-            class="invalid-feedback">Ovo polje je obavezno!</div>
-            <div *ngIf="form.controls['lozinka'].hasError('pattern') && (form.controls['lozinka'].touched || form.controls['lozinka'].dirty)" 
-            class="invalid-feedback">Neispravna lozinka!</div>
-          </div>
+      </div>
+      <div class="form-group row">
+        <label for="lozinka" class="control-label col-md-3"><b>Lozinka</b></label>
+        <div class="col-md-9">
+          <input type="password" class="form-control" id="lozinka" name="lozinka" placeholder="Lozinka" [formControl]="form.controls['lozinka']" 
+          [class.is-invalid]="!form.controls['lozinka'].valid && (form.controls['lozinka'].touched || form.controls['lozinka'].dirty)">
+          <div *ngIf="form.controls['lozinka'].hasError('required') && (form.controls['lozinka'].touched || form.controls['lozinka'].dirty)" 
+          class="invalid-feedback">Ovo polje je obavezno!</div>
+          <div *ngIf="form.controls['lozinka'].hasError('pattern') && (form.controls['lozinka'].touched || form.controls['lozinka'].dirty)" 
+          class="invalid-feedback">Neispravna lozinka!</div>
         </div>
-        <div class="form-group row">
-          <label for="ime" class="control-label col-md-3"><b>Ime</b></label>
-          <div class="col-md-9">
-            <input type="text" class="form-control" id="ime" name="ime" placeholder="Ime" [formControl]="form.controls['ime']"
-            [class.is-invalid]="!form.controls['ime'].valid && (form.controls['ime'].touched || form.controls['ime'].dirty)">
-            <div *ngIf="!form.controls['ime'].valid && (form.controls['ime'].touched || form.controls['ime'].dirty)" 
-            class="invalid-feedback">Ovo polje je obavezno!</div>
-          </div>
+      </div>
+      <div class="form-group row">
+        <label for="ime" class="control-label col-md-3"><b>Ime</b></label>
+        <div class="col-md-9">
+          <input type="text" class="form-control" id="ime" name="ime" placeholder="Ime" [formControl]="form.controls['ime']"
+          [class.is-invalid]="!form.controls['ime'].valid && (form.controls['ime'].touched || form.controls['ime'].dirty)">
+          <div *ngIf="!form.controls['ime'].valid && (form.controls['ime'].touched || form.controls['ime'].dirty)" 
+          class="invalid-feedback">Ovo polje je obavezno!</div>
         </div>
-        <div class="form-group row">
-          <label for="prezime" class="control-label col-md-3"><b>Prezime</b></label>
-          <div class="col-md-9">
-            <input type="text" class="form-control" id="prezime" name="prezime" placeholder="Prezime" [formControl]="form.controls['prezime']"
-            [class.is-invalid]="!form.controls['prezime'].valid && (form.controls['prezime'].touched || form.controls['prezime'].dirty)">
-            <div *ngIf="!form.controls['prezime'].valid && (form.controls['prezime'].touched || form.controls['prezime'].dirty)" 
-            class="invalid-feedback">Ovo polje je obavezno!</div>
-          </div>
+      </div>
+      <div class="form-group row">
+        <label for="prezime" class="control-label col-md-3"><b>Prezime</b></label>
+        <div class="col-md-9">
+          <input type="text" class="form-control" id="prezime" name="prezime" placeholder="Prezime" [formControl]="form.controls['prezime']"
+          [class.is-invalid]="!form.controls['prezime'].valid && (form.controls['prezime'].touched || form.controls['prezime'].dirty)">
+          <div *ngIf="!form.controls['prezime'].valid && (form.controls['prezime'].touched || form.controls['prezime'].dirty)" 
+          class="invalid-feedback">Ovo polje je obavezno!</div>
         </div>
-        <div class="row">
-          <div class="col-lg-3"></div>
-          <div class="col-lg-9">
-            <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Dodajte</button>
-            <button type="button" class="btn btn-danger" (click)="reset()">Resetujte</button>
-          </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-9">
+          <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Dodajte</button>
+          <button type="button" class="btn btn-danger" (click)="reset()">Resetujte</button>
         </div>
-      </fieldset>
-    </form>
-  </div>
+      </div>
+    </fieldset>
+  </form>
+</div>

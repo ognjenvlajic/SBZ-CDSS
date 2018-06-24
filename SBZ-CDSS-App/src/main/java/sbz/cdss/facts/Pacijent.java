@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,24 +37,23 @@ public class Pacijent implements Serializable {
 	@ManyToMany
 	private List<Lek> alergijaLekovi;
 	
-	@ElementCollection
-	private List<String> alergijaSastojci; 
+	@ManyToMany
+	private List<Sastojak> alergijaSastojci; 
 	
 	public Pacijent() {}
 	
-	public Pacijent(String jMBG, String ime, String prezime, List<Lek> alergijaLekovi,
-			List<String> alergijaSastojci) {
+	public Pacijent(String jMBG, String ime, String prezime) {
 		super();
 		this.jmbg = jMBG;
 		this.ime = ime;
 		this.prezime = prezime;
 		this.karton = new ArrayList<Dijagnoza>();
-		this.alergijaLekovi = alergijaLekovi;
-		this.alergijaSastojci = alergijaSastojci;
+		this.alergijaLekovi = new ArrayList<Lek>();
+		this.alergijaSastojci = new ArrayList<Sastojak>();
 	}
 
 	public Pacijent(String jMBG, String ime, String prezime, List<Dijagnoza> karton, List<Lek> alergijaLekovi,
-			List<String> alergijaSastojci) {
+			List<Sastojak> alergijaSastojci) {
 		super();
 		this.jmbg = jMBG;
 		this.ime = ime;
@@ -113,12 +111,30 @@ public class Pacijent implements Serializable {
 		this.alergijaLekovi = alergijaLekovi;
 	}
 
-	public List<String> getAlergijaSastojci() {
+	public List<Sastojak> getAlergijaSastojci() {
 		return alergijaSastojci;
 	}
 
-	public void setAlergijaSastojci(List<String> alergijaSastojci) {
+	public void setAlergijaSastojci(List<Sastojak> alergijaSastojci) {
 		this.alergijaSastojci = alergijaSastojci;
+	}
+	
+	public boolean alergicanNaLek(Lek lek) {
+		for (Lek l : this.alergijaLekovi) {
+			if (lek.getNaziv().equals(l.getNaziv())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean alergicanNaSastojak(Sastojak sastojak) {
+		for (Sastojak s : this.alergijaSastojci) {
+			if (sastojak.getNaziv().equalsIgnoreCase(s.getNaziv())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

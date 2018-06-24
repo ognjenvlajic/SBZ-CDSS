@@ -1,0 +1,65 @@
+<div class="row justify-content-md-center" *ngIf="uloga === 'LEKAR'">
+  <div class="col-md-11">
+    <div class="row">
+      <h4 *ngIf="!pacijent">Niste izabrali pacijenta!</h4>
+      <h4 class="col-md-8" *ngIf="pacijent">Izabrani pacijent: {{pacijent.ime}} {{pacijent.prezime}} <b>(JMBG: {{pacijent.jmbg}})</b></h4>
+      <button type="button" class="btn btn-danger" (click)="ukloni()" *ngIf="pacijent">Ukloni pacijenta</button>
+    </div>
+  </div>
+</div>
+<br>
+<br>
+
+<div class="row justify-content-md-center" *ngIf="pacijenti !== undefined">
+  <div class="col-md-11">
+    <div class="row">
+      <label class="col-md-1" *ngIf="pacijenti.length !== 0">Prikazi: </label>
+      <select class="form-control col-md-1" id="prikaz" [(ngModel)]="pager.velicinaStrane" (change)="promeniVelicinu()" *ngIf="pacijenti.length !== 0">
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
+      <label class="col-md-2" *ngIf="pacijenti.length === 0"> </label>
+      <label class="col-md-5"> </label>
+      <input type="text" class="form-control col-md-3" id="pretragaPolje" [(ngModel)]="pretragaPolje" placeholder="Unesite ime ili prezime"
+      *ngIf="(pacijenti.length !== 0 && !pretragaIzvrsena) || pretragaIzvrsena">
+      &nbsp;&nbsp;<button class="btn btn-primary" (click)="pretraga()"
+      *ngIf="(pacijenti.length !== 0 && !pretragaIzvrsena) || pretragaIzvrsena">Pretraga</button>
+    </div>
+    <br>
+    <table class="table table-hover" *ngIf="pacijenti.length !== 0">
+      <thead>
+        <tr class="table-primary d-flex">
+          <th class="col-md-1">#</th>
+          <th class="col-md-3">JMBG</th>
+          <th class="col-md-7">Ime i prezime</th>
+          <th class="col-md-1"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="table-secondary d-flex" *ngFor="let pacijent of pacijenti; let i = index">
+          <th class="col-md-1">{{pager.velicinaStrane * (pager.trenutnaStrana - 1) + i+1}}</th>
+          <th class="col-md-3">{{pacijent.jmbg}}</th>
+          <td class="col-md-7">
+              <a routerLink="/pacijent/{{pacijent.id}}">{{pacijent.ime}} {{pacijent.prezime}}</a>
+          </td>
+          <td *ngIf="uloga === 'ADMIN'"><button type="button" class="btn btn-danger">Obrisi</button></td>
+          <td *ngIf="uloga === 'LEKAR'"><button type="button" class="btn btn-primary" (click)="izaberi(pacijent)">Izaberi</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 *ngIf="pacijenti.length === 0 && pretragaIzvrsena">Nijedan pacijent sa trazenim kriterijumom nije prondajen!</h2>
+  </div>
+  <div>
+    <app-pager *ngIf="pacijenti.length !== 0" [pager]="pager" (izmenaEvent)="izlistajPacijente($event)"></app-pager>
+  </div>
+</div>
+
+<div class="row justify-content-md-center" *ngIf="pacijenti !== undefined && pacijenti.length === 0 && !pretragaIzvrsena">
+  <div class="col-md-11">
+    <div class="row">
+      <h2>Nijedan pacijent jos nije dodat!</h2>
+    </div>
+  </div>
+</div>

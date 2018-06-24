@@ -31,15 +31,20 @@ public class Dijagnoza implements Serializable {
 	private Bolest bolest;
 	
 	@ManyToMany
+	private List<SimptomVrednost> simptomi;
+	
+	@ManyToMany
 	private List<Lek> pripisaniLekovi;
 	
 	public Dijagnoza() {}
 
-	public Dijagnoza(Pacijent pacijent, Date datum, Bolest bolest, List<Lek> pripisaniLekovi) {
+	public Dijagnoza(Pacijent pacijent, Date datum, Bolest bolest, List<SimptomVrednost> simptomi, 
+			List<Lek> pripisaniLekovi) {
 		super();
 		this.pacijent = pacijent;
 		this.datum = datum;
 		this.bolest = bolest;
+		this.simptomi = simptomi;
 		this.pripisaniLekovi = pripisaniLekovi;
 	}
 
@@ -74,6 +79,14 @@ public class Dijagnoza implements Serializable {
 	public void setBolest(Bolest bolest) {
 		this.bolest = bolest;
 	}
+	
+	public List<SimptomVrednost> getSimptomi() {
+		return simptomi;
+	}
+
+	public void setSimptomi(List<SimptomVrednost> simptomi) {
+		this.simptomi = simptomi;
+	}
 
 	public List<Lek> getPripisaniLekovi() {
 		return pripisaniLekovi;
@@ -81,6 +94,24 @@ public class Dijagnoza implements Serializable {
 
 	public void setPripisaniLekovi(List<Lek> pripisaniLekovi) {
 		this.pripisaniLekovi = pripisaniLekovi;
+	}
+	
+	public boolean sadrziLekGrupe(Lek.Grupa lg) {
+		for (Lek l : this.pripisaniLekovi) {
+			if (l.getGrupa() == lg) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean sadrziSimptom(SimptomVrednost simptom) {
+		for (SimptomVrednost sv: this.simptomi) {
+			if (sv.getNaziv().equalsIgnoreCase(simptom.getNaziv())) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

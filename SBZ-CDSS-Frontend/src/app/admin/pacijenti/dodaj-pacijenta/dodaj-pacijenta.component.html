@@ -1,0 +1,43 @@
+<div class="row justify-content-md-center">
+  <form class="col-md-6 box" [formGroup]="form" (ngSubmit)="dodajPacijenta()">
+    <fieldset>
+      <div class="form-group row">
+        <label for="jmbg" class="control-label col-md-3"><b>JMBG</b></label>
+        <div class="col-md-9">
+          <input type="text" class="form-control" id="jmbg" name="jmbg" placeholder="JMBG" [formControl]="form.controls['jmbg']" 
+          [class.is-invalid]="!form.controls['jmbg'].valid && (form.controls['jmbg'].touched || form.controls['jmbg'].dirty)"
+          (keypress)="onlyNumber($event)" maxlength="13">
+          <div *ngIf="form.controls['jmbg'].hasError('required') && (form.controls['jmbg'].touched || form.controls['jmbg'].dirty)" 
+          class="invalid-feedback">Ovo polje je obavezno!</div>
+          <div *ngIf="!form.controls['jmbg'].hasError('required') && (form.controls['jmbg'].touched || form.controls['jmbg'].dirty)" 
+          class="invalid-feedback">JMBG mora imati 13 cifara!</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="ime" class="control-label col-md-3"><b>Ime</b></label>
+        <div class="col-md-9">
+          <input type="text" class="form-control" id="ime" name="ime" placeholder="Ime" [formControl]="form.controls['ime']"
+          [class.is-invalid]="!form.controls['ime'].valid && (form.controls['ime'].touched || form.controls['ime'].dirty)">
+          <div *ngIf="!form.controls['ime'].valid && (form.controls['ime'].touched || form.controls['ime'].dirty)" 
+          class="invalid-feedback">Ovo polje je obavezno!</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="prezime" class="control-label col-md-3"><b>Prezime</b></label>
+        <div class="col-md-9">
+          <input type="text" class="form-control" id="prezime" name="prezime" placeholder="Prezime" [formControl]="form.controls['prezime']"
+          [class.is-invalid]="!form.controls['prezime'].valid && (form.controls['prezime'].touched || form.controls['prezime'].dirty)">
+          <div *ngIf="!form.controls['prezime'].valid && (form.controls['prezime'].touched || form.controls['prezime'].dirty)" 
+          class="invalid-feedback">Ovo polje je obavezno!</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-9">
+          <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Dodajte</button>
+          <button type="button" class="btn btn-danger" (click)="reset()">Resetujte</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>

@@ -9,6 +9,7 @@ import { AdministratorService } from '../../../services/administrator/administra
     styleUrls: ['./dodaj-lekara.component.scss']
 })
 export class DodajLekaraComponent implements OnInit {
+    
     form: FormGroup;
     emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
     lozinkaPattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$"

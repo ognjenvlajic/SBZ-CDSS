@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="col-md-12">
+    <div class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed-top">
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item" [class.active]="funkcionalnost === 'dodavanje'">
+            <button class="btn" [class.btn-primary]="funkcionalnost === 'dodavanje'" [class.btn-outline-primary]="funkcionalnost !== 'dodavanje'" 
+            style="cursor: pointer;" (click)="clickedFun('dodavanje')"><b>Dodavanje</b></button>
+          </li>
+          <li class="nav-item" [class.active]="funkcionalnost === 'pregled'">
+            <button class="btn" [class.btn-primary]="funkcionalnost === 'pregled'" [class.btn-outline-primary]="funkcionalnost !== 'pregled'" 
+            style="cursor: pointer;" (click)="clickedFun('pregled')"><b>Pregled</b></button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <br>
+  <router-outlet></router-outlet>
+</div>

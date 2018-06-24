@@ -4,13 +4,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import sbz.cdss.validation.EmailValidation;
+import sbz.cdss.validation.PasswordValidation;
 
 public class DTOLekar {
 	
 	@EmailValidation
 	private String email;
 	
-	//@PasswordValidation
+	@PasswordValidation
 	private String lozinka;
 	
 	@NotNull(message = "Nije uneto ime!")

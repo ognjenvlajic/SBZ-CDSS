@@ -19,13 +19,10 @@
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/lekovi']">Lekovi</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/sastojci']">Sastojci lekova</a>
-      </li>
     </ul>
     <ul class="nav navbar-nav navbar-right btn-outline-primary">
       <li>
-        <label class="nav-link active">Ime i prezime&nbsp;&nbsp;&nbsp;</label>
+        <label class="nav-link active">{{email}}&nbsp;&nbsp;&nbsp;</label>
       </li>
       <li>
         <button class="btn btn-secondary" (click)="odjavljivanje()">Izlogujte se</button>

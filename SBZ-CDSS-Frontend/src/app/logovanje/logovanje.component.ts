@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../services/authentication/authentication.service';
 //import { AuthenticationService } from '../services/authentication/authentication.service';
 
 @Component({
@@ -14,14 +15,14 @@ export class LogovanjeComponent implements OnInit {
 
     constructor(
         private router: Router,
-        //private authenticateService: AuthenticationService
+        private authenticateService: AuthenticationService
     ) { }
 
     ngOnInit() {
     }
 
     logovanje() {
-        /*this.greska = undefined;
+        this.greska = undefined;
         this.authenticateService.logovanje(this.email, this.lozinka)
         .subscribe(
             result => {
@@ -31,11 +32,10 @@ export class LogovanjeComponent implements OnInit {
             },
             error => {
                 // moguce grekse
-                // Stanaru nije dodeljen stan!
                 // Pogresan email ili lozinka!
                 this.greska = error.error;
             }
-        )*/
+        )
     }
 
 }

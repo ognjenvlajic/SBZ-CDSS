@@ -1,0 +1,102 @@
+<div class="row justify-content-md-center">
+  <form class="col-md-10 box" [formGroup]="form" (ngSubmit)="dodajBolest()">
+    <fieldset>
+      <div class="form-group row">
+        <label for="naziv" class="control-label col-md-3"><b>Naziv</b></label>
+        <div class="col-md-9">
+          <input type="text" class="form-control" id="naziv" name="naziv" placeholder="Naziv" [formControl]="form.controls['naziv']" 
+          [class.is-invalid]="!form.controls['naziv'].valid && (form.controls['naziv'].touched || form.controls['naziv'].dirty)">
+          <div *ngIf="form.controls['naziv'].hasError('required') && (form.controls['naziv'].touched || form.controls['naziv'].dirty)" 
+          class="invalid-feedback">Ovo polje je obavezno!</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="opstiSimptomi" class="control-label col-md-3"><b>Opsti simptomi</b></label>
+        <div class="col-md-7">
+            <select class="form-control" id="opstiDodavanje" name="opstiDodavanje" [formControl]="form.controls['opstiDodavanje']"
+            *ngFor="let simptom of simptomi;let i = index">
+              <option [value]="simptom.id">
+                {{simptom.naziv}}
+                <div *ngIf="simptom.minVrednost > -1 || simptom.maxVrednost > -1">(</div>
+                <div *ngIf="simptom.minVrednost > -1">od {{simptom.minVrednost}} </div>
+                <div *ngIf="simptom.maxVrednost > -1">do {{simptom.maxVrednost}}</div>
+                <div *ngIf="simptom.minVrednost > -1 || simptom.maxVrednost > -1">)</div>
+              </option>
+            </select>
+        </div>
+        <button type="button" class="btn btn-primary col-md-2" (click)="dodajOpsti()"
+        [disabled]="form.value.opstiDodavanje === null">Dodaj simptom</button>
+        <label class="col-md-3"></label>
+        <table class="col-md-7" border=0>
+          <thead>
+            <tr class="d-flex">
+              <th class="col-md-1"></th>
+              <th class="col-md-10"></th>
+              <th class="col-md-1"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="d-flex" *ngFor="let simptom of form.value.opstiSimptomi; let i = index">
+              <th class="col-md-1">{{i+1}}</th>
+              <td class="col-md-10">
+                  {{simptom.naziv}}
+                  <span *ngIf="simptom.minVrednost > -1 || simptom.maxVrednost > -1">(</span>
+                  <span *ngIf="simptom.minVrednost > -1">od {{simptom.minVrednost}} </span>
+                  <span *ngIf="simptom.maxVrednost > -1">do {{simptom.maxVrednost}}</span>
+                  <span *ngIf="simptom.minVrednost > -1 || simptom.maxVrednost > -1">)</span>
+              </td>
+              <th class="col-md-1"><button type="button" class="btn btn-danger" (click)="obrisiOpsti(i)">Obrisi</button></th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group row">
+        <label for="specificniSimptomi" class="control-label col-md-3"><b>Specificni simptomi</b></label>
+        <div class="col-md-7">
+            <select class="form-control" id="specificniDodavanje" name="specificniDodavanje" [formControl]="form.controls['specificniDodavanje']"
+            *ngFor="let simptom of simptomi;let i = index">
+              <option [value]="simptom.id">
+                  {{simptom.naziv}}
+                  <div *ngIf="simptom.minVrednost > -1 || simptom.maxVrednost > -1">(</div>
+                  <div *ngIf="simptom.minVrednost > -1">od {{simptom.minVrednost}} </div>
+                  <div *ngIf="simptom.maxVrednost > -1">do {{simptom.maxVrednost}}</div>
+                  <div *ngIf="simptom.minVrednost > -1 || simptom.maxVrednost > -1">)</div>
+              </option>
+            </select>
+        </div>
+        <button type="button" class="btn btn-primary col-md-2" (click)="dodajSpecificni()"
+        [disabled]="form.value.specificniDodavanje === null">Dodaj simptom</button>
+        <label class="col-md-3"></label>
+        <table class="col-md-7" border=0>
+          <thead>
+            <tr class="d-flex">
+              <th class="col-md-1"></th>
+              <th class="col-md-10"></th>
+              <th class="col-md-1"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="d-flex" *ngFor="let simptom of form.value.specificniSimptomi; let i = index">
+              <th class="col-md-1">{{i+1}}</th>
+              <td class="col-md-10">
+                  {{simptom.naziv}}
+                  <span *ngIf="simptom.minVrednost > -1 || simptom.maxVrednost > -1">(</span>
+                  <span *ngIf="simptom.minVrednost > -1">od {{simptom.minVrednost}} </span>
+                  <span *ngIf="simptom.maxVrednost > -1">do {{simptom.maxVrednost}}</span>
+                  <span *ngIf="simptom.minVrednost > -1 || simptom.maxVrednost > -1">)</span>
+              </td>
+              <th class="col-md-1"><button type="button" class="btn btn-danger" (click)="obrisiSpecificni(i)">Obrisi</button></th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-9">
+          <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Dodajte</button>
+          <button type="button" class="btn btn-danger" (click)="reset()">Resetujte</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>

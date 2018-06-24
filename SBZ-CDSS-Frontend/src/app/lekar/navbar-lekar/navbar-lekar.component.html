@@ -1,3 +1,26 @@
-<p>
-  navbar-lekar works!
-</p>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/pacijentLekar']">Pacijent</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/dijagnoza']">Dijagnoza</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/monitoring']">Monitoring</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/izvestaji']">izvestaji</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right btn-outline-primary">
+      <li>
+        <label class="nav-link active">{{email}}&nbsp;&nbsp;&nbsp;</label>
+      </li>
+      <li>
+        <button class="btn btn-secondary" (click)="odjavljivanje()">Izlogujte se</button>
+      </li>
+    </ul>
+  </div>
+</nav>

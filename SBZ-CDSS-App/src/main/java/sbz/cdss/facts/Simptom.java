@@ -1,6 +1,7 @@
 package sbz.cdss.facts;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +18,7 @@ public class Simptom implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String naziv;
 	
 	@Column
@@ -65,6 +66,18 @@ public class Simptom implements Serializable {
 
 	public void setMaxVrednost(int maxVrednost) {
 		this.maxVrednost = maxVrednost;
+	}
+	
+	public boolean pripada(List<Simptom> simptomi) {
+		if (simptomi == null) {
+			return false;
+		}
+		for (Simptom s: simptomi) {
+			if (s.getNaziv().equalsIgnoreCase(this.naziv)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	 
 }

@@ -1,6 +1,5 @@
-<router-outlet>
+<router-outlet (activate)="proveriUlogu()">
   <app-navbar-lekar *ngIf="uloga === 'LEKAR'"></app-navbar-lekar>
   <app-navbar-admin *ngIf="uloga === 'ADMIN'"></app-navbar-admin>
-  <app-navbar-admin></app-navbar-admin>
   <br>
 </router-outlet>

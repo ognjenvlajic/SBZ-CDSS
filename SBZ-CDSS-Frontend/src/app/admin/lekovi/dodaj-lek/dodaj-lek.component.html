@@ -1,0 +1,61 @@
+<div class="row justify-content-md-center">
+  <form class="col-md-8 box" [formGroup]="form" (ngSubmit)="dodajLek()">
+    <fieldset>
+      <div class="form-group row">
+        <label for="naziv" class="control-label col-md-3"><b>Naziv</b></label>
+        <div class="col-md-9">
+          <input type="text" class="form-control" id="naziv" name="naziv" placeholder="Naziv" [formControl]="form.controls['naziv']" 
+          [class.is-invalid]="!form.controls['naziv'].valid && (form.controls['naziv'].touched || form.controls['naziv'].dirty)">
+          <div *ngIf="form.controls['naziv'].hasError('required') && (form.controls['naziv'].touched || form.controls['naziv'].dirty)" 
+          class="invalid-feedback">Ovo polje je obavezno!</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="grupa" class="control-label col-md-3"><b>Grupa</b></label>
+        <div class="col-md-9">
+          <select class="form-control" id="grupa" name="grupa" [formControl]="form.controls['grupa']"
+          [class.is-invalid]="!form.controls['grupa'].valid && (form.controls['grupa'].touched || form.controls['grupa'].dirty)">
+            <option value="ANELGETIK">Anelgetik</option>
+            <option value="ANTIBIOTIK">Antibiotik</option>
+            <option value="OSTALO">Ostalo</option>
+          </select>
+          <div *ngIf="form.controls['grupa'].hasError('required') && (form.controls['grupa'].touched || form.controls['grupa'].dirty)" 
+          class="invalid-feedback">Ovo polje je obavezno!</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="sastojci" class="control-label col-md-3"><b>Sastojci</b></label>
+        <div class="col-md-7">
+          <input type="text" class="form-control" id="sastojakDodavanje" name="sastojakDodavanje" 
+          placeholder="Unesite sastojak koji zelite da dodate" [formControl]="form.controls['sastojakDodavanje']">
+        </div>
+        <button type="button" class="btn btn-primary col-md-2" (click)="dodajSastojak()"
+        [disabled]="form.value.sastojakDodavanje === ''">Dodaj sastojak</button>
+        <label class="col-md-3"></label>
+        <table class="col-md-8" border=0>
+          <thead>
+            <tr class="d-flex">
+              <th class="col-md-1"></th>
+              <th class="col-md-10"></th>
+              <th class="col-md-1"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="d-flex" *ngFor="let sastojak of form.value.sastojci; let i = index">
+              <th class="col-md-1">{{i+1}}</th>
+              <td class="col-md-10">{{sastojak}}</td>
+              <th class="col-md-1"><button type="button" class="btn btn-danger" (click)="obrisi(i)">Obrisi</button></th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-9">
+          <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Dodajte</button>
+          <button type="button" class="btn btn-danger" (click)="reset()">Resetujte</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>

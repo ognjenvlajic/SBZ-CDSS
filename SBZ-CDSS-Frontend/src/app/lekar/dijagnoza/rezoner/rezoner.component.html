@@ -1,0 +1,225 @@
+<div class="row justify-content-md-center" *ngIf="prviKorak">
+  <form class="col-md-10 box" name="rezonerForm" (ngSubmit)="rezoner()">
+    <fieldset>
+      <div class="form-group row">
+        <label for="simptomNaziv" class="control-label col-md-3"><b>Naziv simptom</b></label>
+        <div class="col-md-7">
+            <select class="form-control" id="simptomNaziv" name="simptomNaziv" [(ngModel)]="simptomNaziv" (change)="promena()">
+              <option *ngFor="let simptom of simptomi; let i = index" [value]="simptom.naziv">{{simptom.naziv}}</option>
+            </select>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="imaVrednost === true">
+        <label for="simptomVrednost" class="control-label col-md-3"><b>Vrednost</b></label>
+        <div class="col-md-7">
+            <input type="text" class="form-control" id="simptomVrednost" name="simptomVrednost" [(ngModel)]="simptomVrednost"
+            (keypress)="onlyNumber($event)" maxlength="5">
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="simptomiPacijenta.length > 0">
+        <label class="col-md-3"><b>Simptomi: </b></label>
+        <table class="col-md-7" border=0>
+          <thead>
+            <tr class="d-flex">
+              <th class="col-md-1"></th>
+              <th class="col-md-10"></th>
+              <th class="col-md-1"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="d-flex" *ngFor="let simptom of simptomiPacijenta; let i = index">
+              <th class="col-md-1">{{i+1}}</th>
+              <td class="col-md-10">
+                  {{simptom.naziv}}
+                  <span *ngIf="simptom.vrednost > -1">({{simptom.vrednost}})</span>
+              </td>
+              <th class="col-md-1"><button type="button" class="btn btn-danger" (click)="obrisiSimptom(i)">Obrisi</button></th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-9">
+          <button type="button" class="btn btn-primary" (click)="dodajSimptom()">Dodaj simptom</button>
+          <button type="submit" class="btn btn-primary" [disabled]="simptomiPacijenta.length === 0">Pokreni rezoner</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>
+
+<div class="row justify-content-md-center" *ngIf="!prviKorak && drugiKorak">
+  <label class="control-label col-md-10">Simptomi: </label>
+  <table class="col-md-11" border=0 *ngIf="simptomiPacijenta.length > 0">
+    <thead>
+      <tr class="d-flex">
+        <th class="col-md-1"></th>
+        <th class="col-md-11"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="d-flex" *ngFor="let simptom of simptomiPacijenta; let i = index">
+        <th class="col-md-1">{{i+1}}</th>
+        <td class="col-md-11">{{simptom.naziv}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<br>
+<br>
+
+<div class="row justify-content-md-center" *ngIf="drugiKorak && bolesti !== undefined">
+  <h2>Izaberite bolest</h2>
+  <table class="col-md-11" border=0 *ngIf="bolesti.length > 0">
+    <thead>
+      <tr class="d-flex">
+        <th class="col-md-1"></th>
+        <th class="col-md-10"></th>
+        <th class="col-md-1"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="d-flex" *ngFor="let b of bolesti; let i = index">
+        <th class="col-md-1">{{i+1}}</th>
+        <td class="col-md-10">{{b.naziv}}</td>
+        <th class="col-md-1"><button type="button" class="btn btn-primary" (click)="izaberiBolest(i)">Izaberi</button></th>
+      </tr>
+    </tbody>
+  </table>
+  <label class="col-md-11" *ngIf="bolesti.length === 0">Nijedna bolest nije pronadjena!</label>
+</div>
+
+<div class="row justify-content-md-center" *ngIf="!prviKorak && !drugiKorak">
+  <label class="control-label col-md-10">Bolest: {{bolest.naziv}}</label>
+  <label class="control-label col-md-10">Simptomi: </label>
+  <table class="col-md-11" border=0 *ngIf="simptomiPacijenta.length > 0">
+    <thead>
+      <tr class="d-flex">
+        <th class="col-md-1"></th>
+        <th class="col-md-11"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="d-flex" *ngFor="let simptom of simptomiPacijenta; let i = index">
+        <th class="col-md-1">{{i+1}}</th>
+        <td class="col-md-11">{{simptom.naziv}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<br>
+<br>
+
+<div class="row justify-content-md-center" *ngIf="treciKorak">
+  <h2>Alergije pacijenta</h2>
+  <form class="col-md-10 box" name="alergijeForm" (ngSubmit)="potvrdiAlergije()">
+    <fieldset>
+      <div class="form-group row">
+        <label for="lekNaziv" class="control-label col-md-3"><b>Lek</b></label>
+        <div class="col-md-7">
+          <select class="form-control" id="lekNaziv" name="lekNaziv" [(ngModel)]="lekNaziv">
+            <option *ngFor="let lek of lekovi; let i = index" [value]="lek.naziv">{{lek.naziv}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="pacijent.alergijaLekovi.length > 0">
+        <label class="col-md-3"><b>Lekovi </b></label>
+        <table class="col-md-7" border=0>
+          <thead>
+            <tr class="d-flex">
+              <th class="col-md-1"></th>
+              <th class="col-md-10"></th>
+              <th class="col-md-1"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="d-flex" *ngFor="let lek of pacijent.alergijaLekovi; let i = index">
+              <th class="col-md-1">{{i+1}}</th>
+              <td class="col-md-10">{{lek.naziv}}</td>
+              <th class="col-md-1"><button type="button" class="btn btn-danger" (click)="obrisiAlergijuLek(i)">Obrisi</button></th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group row">
+        <label for="sastojak" class="control-label col-md-3"><b>Sastojak</b></label>
+        <div class="col-md-7">
+          <input type="text" class="form-control" id="sastojak" name="sastojak" placeholder="Sastojak" [(ngModel)]="sastojak">
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="pacijent.alergijaSastojci.length > 0">
+        <label class="col-md-3"><b>Sastojci </b></label>
+        <table class="col-md-7" border=0>
+          <thead>
+            <tr class="d-flex">
+              <th class="col-md-1"></th>
+              <th class="col-md-10"></th>
+              <th class="col-md-1"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="d-flex" *ngFor="let s of pacijent.alergijaSastojci; let i = index">
+              <th class="col-md-1">{{i+1}}</th>
+              <td class="col-md-10">{{s}}</td>
+              <th class="col-md-1"><button type="button" class="btn btn-danger" (click)="obrisiAlergijuSastojak(i)">Obrisi</button></th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-9">
+          <button type="button" class="btn btn-primary" [disabled]="!lekNaziv" (click)="dodajAlergijuLek()">Dodaj lek</button>
+          <button type="button" class="btn btn-primary" [disabled]="sastojak === ''" (click)="dodajAlergijuSastojak()">Dodaj sastojak</button>
+          <button type="submit" class="btn btn-primary">Nastavi dijagnozu</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>
+
+<div class="row justify-content-md-center" *ngIf="cetvrtiKorak">
+  <h2>Prepisivanje lekove</h2>
+  <form class="col-md-10 box" name="lekoviForm" (ngSubmit)="dijagnozaIValidacija()">
+    <fieldset>
+      <div class="form-group row">
+        <label for="lekNaziv" class="control-label col-md-3"><b>Lek</b></label>
+        <div class="col-md-7">
+          <select class="form-control" id="lekNaziv" name="lekNaziv" [(ngModel)]="lekNaziv">
+            <option *ngFor="let lek of lekovi; let i = index" [value]="lek.naziv">{{lek.naziv}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="pripisaniLekovi.length > 0">
+        <label class="col-md-3"><b>Lekovi </b></label>
+        <table class="col-md-7" border=0>
+          <thead>
+            <tr class="d-flex">
+              <th class="col-md-1"></th>
+              <th class="col-md-10"></th>
+              <th class="col-md-1"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="d-flex" *ngFor="let lek of pripisaniLekovi; let i = index">
+              <th class="col-md-1">{{i+1}}</th>
+              <td class="col-md-10">{{lek.naziv}}</td>
+              <th class="col-md-1"><button type="button" class="btn btn-danger" (click)="obrisiLek(i)">Obrisi</button></th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row">
+        <div class="control-label col-md-12" style="color:red">{{neuspesnaValidacija}}</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-9">
+          <button type="button" class="btn btn-primary" [disabled]="!lekNaziv" (click)="dodajLek()">Dodaj lek</button>
+          <button type="submit" class="btn btn-primary">Zavrsi dijagnozu</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>

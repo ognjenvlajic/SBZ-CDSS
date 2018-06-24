@@ -1,0 +1,92 @@
+package sbz.cdss.rules
+
+import sbz.cdss.facts.Bolest;
+import sbz.cdss.facts.Dijagnoza;
+import sbz.cdss.facts.Lek;
+import sbz.cdss.facts.Lekar;
+import sbz.cdss.facts.Pacijent;
+import sbz.cdss.facts.Rezoner;
+import sbz.cdss.facts.Simptom;
+import sbz.cdss.facts.SimptomVrednost;
+import sbz.cdss.facts.Util;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Date;
+
+
+rule "test-izvestaji"
+   agenda-group "izvestaji"
+   when
+       $p: Pacijent()
+   then
+       System.out.println("test");
+end
+
+rule "Spisak pacijenata sa mogucim hronicnim oboljenjem"
+    agenda-group "izvestaji"
+    lock-on-active
+    when
+        $bolest: Bolest(naziv != "Prehlada" && naziv != "Groznica")
+        $pacijent: Pacijent($karton: karton)
+        $ukupno: Number(intValue >= 5) from accumulate(
+            Dijagnoza( (Util.dodajDane(datum, 0 , 0, 2) > new Date())
+                && (bolest.naziv == $bolest.naziv)) from $karton,
+            init( int ukupno = 0;),
+            action( ukupno += 1;),
+            result( ukupno ) 
+        ) 
+    then
+        System.out.println("Pacijent sa mogucim hronicnim oboljenjem: " + $pacijent.getIme() + " " + $pacijent.getPrezime());
+end
+       
+
+/*rule "Spisak mogucih zavisnika"
+    agenda-group "izvestaji"
+    lock-on-active
+    when
+        $pacijent: Pacijent($karton: karton)
+        $dijagnoze: List() from collect(
+            Dijagnoza( (Util.dodajDane(datum, 0, 6, 0) > new Date())
+                && sadrziLekGrupe(Lek.Grupa.ANELGETIK) ) from $karton
+        )
+        eval($dijagnoze.size() >= 6)
+        $lekari: Set() from accumulate(
+            Dijagnoza($lekar: lekar) from $dijagnoze,
+            init( Set<Lekar> lekari = new HashSet<Lekar>(); ),
+            action( lekari.add($lekar); ),
+            result( lekari )
+        )
+        eval($lekari.size() >= 3)
+    then
+    	System.out.println("Moguci zavisnik: " + $pacijent.getIme() + " " + $pacijent.getPrezime());
+end
+
+rule "Spisak pacijenata sa oslabljenim imunitetom"
+    agenda-group "izvestaji"
+    lock-on-active
+    when
+        $pacijent: Pacijent($karton: karton)
+        $dijagnoze: List() from collect (
+            Dijagnoza( (Util.dodajDane(datum, 0, 0, 1) > new Date())
+                && sadrziLekGrupe(Lek.Grupa.ANTIBIOTIK) ) from $karton
+        )
+        eval($dijagnoze.size() >= 10)
+        $bolesti: Set() from accumulate (
+            Dijagnoza($bolest: bolest) from $dijagnoze,
+            init( Set<Bolest> bolesti = new HashSet<Bolest>(); ),
+            action( bolesti.add($bolest); ),
+            result( bolesti )
+        )
+        eval($bolesti.size() >= 2)
+        $samoAntibiotik: Number( intValue == 0) from accumulate (
+            Dijagnoza( (Util.dodajDane(datum, 0, 0, 1) > new Date())
+                && (!(sadrziLekGrupe(Lek.Grupa.ANTIBIOTIK))) ) from $karton,
+            init( int ukupno = 0; ),
+            action( ukupno += 1; ),
+            result( ukupno ) 
+        )
+    then
+        System.out.println("Pacijent sa oslabljenim imunitetom: " + $pacijent.getIme() + " " + $pacijent.getPrezime());
+end*/

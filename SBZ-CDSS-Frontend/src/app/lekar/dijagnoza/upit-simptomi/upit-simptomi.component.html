@@ -1,0 +1,35 @@
+<div class="row justify-content-md-center">
+  <form class="col-md-10 box" name="bolestForm" (ngSubmit)="upit()">
+    <fieldset>
+      <div class="form-group row">
+        <label for="bolestId" class="control-label col-md-3"><b>Bolest</b></label>
+        <div class="col-md-7">
+            <select class="form-control" id="bolestId" name="bolestId" [(ngModel)]="bolestId">
+              <option *ngFor="let bolest of bolesti; let i = index" [value]="bolest.id">{{bolest.naziv}}</option>
+            </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-9">
+          <button type="submit" class="btn btn-primary" [disabled]="!bolestId">Upit</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+  <label class="col-md-10"><b>Rezultat upita: </b></label>
+  <table class="col-md-8" border=0>
+    <thead>
+      <tr class="d-flex">
+        <th class="col-md-1"></th>
+        <th class="col-md-11"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="d-flex" *ngFor="let rez of rezultat; let i = index">
+        <th class="col-md-1">{{i+1}}</th>
+        <td class="col-md-11">{{rez.naziv}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

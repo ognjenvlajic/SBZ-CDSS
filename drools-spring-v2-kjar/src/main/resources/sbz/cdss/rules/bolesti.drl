@@ -1,0 +1,231 @@
+package sbz.cdss.rules
+
+import sbz.cdss.facts.Bolest;
+import sbz.cdss.facts.Dijagnoza;
+import sbz.cdss.facts.Lek;
+import sbz.cdss.facts.Lekar;
+import sbz.cdss.facts.Pacijent;
+import sbz.cdss.facts.Rezoner;
+import sbz.cdss.facts.Simptom;
+import sbz.cdss.facts.SimptomVrednost;
+import sbz.cdss.facts.Util;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Date;
+
+
+rule "test"
+   agenda-group "bolesti"
+   when
+       $p: Pacijent()
+   then
+       System.out.println("test");
+end
+
+rule "Prehlada - grupa 1"
+    agenda-group "bolesti"
+    lock-on-active
+    salience (500 - $prioritet)
+    when
+        $rezoner: Rezoner(prvaGrupa == null)
+        $bolest: Bolest(naziv == "Prehlada")
+        $simptomi: List() from collect (SimptomVrednost())
+        $prioritet: Number(doubleValue >= 80) from accumulate(
+            SimptomVrednost( naziv == "Curenje iz nosa" || naziv == "Bol u grlu" || naziv == "Glavobolja"
+            	|| naziv == "Kijanje" || naziv == "Kasalj") from $simptomi,
+            init( int ukupno = 0;),
+            action( ukupno += 1;),
+            result( ((double)ukupno / 5.0) * 100 ) 
+        ) 
+    then
+        System.out.println("Prehlada: " + $prioritet);
+        $rezoner.setPrvaGrupa($bolest);
+end
+       
+
+rule "Groznica - grupa 1"
+    agenda-group "bolesti"
+    lock-on-active
+    salience (500 - $prioritet)
+    when
+        $rezoner: Rezoner(prvaGrupa == null)
+        $bolest: Bolest(naziv == "Groznica")
+        $simptomi: List() from collect (SimptomVrednost())
+        $prioritet: Number(doubleValue >= 57) from accumulate(
+            SimptomVrednost( naziv == "Kijanje" || naziv == "Bol u grlu" || naziv == "Kasalj"
+            	|| (naziv == "Temperatura" && vrednost >= 38) || naziv == "Curenje iz nosa" 
+            	|| naziv == "Glavobolja" || naziv == "Drhtavica") from $simptomi,
+            init( int ukupno = 0;),
+            action( ukupno += 1; ),
+            result( ((double)ukupno / 7.0) * 100 ) 
+        ) 
+    then
+    	System.out.println("Groznica: " + $prioritet);
+    	$rezoner.setPrvaGrupa($bolest);
+end
+
+rule "Upala krajnika - grupa 1"
+    agenda-group "bolesti"
+    lock-on-active
+    salience (500 - $prioritet)
+    when
+        $rezoner: Rezoner(prvaGrupa == null)
+        $bolest: Bolest(naziv == "Upala krajnika")
+        $simptomi: List() from collect (SimptomVrednost())
+        $prioritet: Number(doubleValue >= 50) from accumulate(
+            SimptomVrednost( naziv == "Bol u grlu" || naziv == "Bol koji se siri do usiju" || naziv == "Glavobolja"
+                || (naziv == "Temeratura" && vrednost >= 40 && vrednost <= 41)
+            	|| naziv == "Drhtavica" || naziv == "Gubitak apetita" || naziv == "Umor"
+            	|| naziv == "Zuti sekret iz nosa") from $simptomi,
+            init( int ukupno = 0; ),
+            action( ukupno += 1; ),
+            result( ((double)ukupno / 8.0) * 100 ) 
+        ) 
+    then
+        System.out.println("Upala krajnika: " + $prioritet);
+        $rezoner.setPrvaGrupa($bolest);
+end
+
+rule "Sinusna infekcija - grupa 1"
+    agenda-group "bolesti"
+    lock-on-active
+    salience (500 - $prioritet)
+    when
+        $rezoner: Rezoner()
+        $bolest: Bolest( naziv == "Sinusna infekcija")
+        $simptomi: List() from collect (SimptomVrednost())
+        $pacijent: Pacijent($karton: karton)
+        $specificni: Number(intValue >= 0) from accumulate(
+            Dijagnoza( (bolest.naziv == "Prehlada" || bolest.naziv == "Groznica") 
+                && (Util.dodajDane(datum, 60, 0, 0) > new Date())) from $karton,
+            init( int ukupno = 0; ),
+            action( ukupno += 1; ),
+            result( ukupno )
+        )
+        $prioritet: Number(doubleValue >= 57) from accumulate( // prebrojanje opstih i dodavenje specificnih na kraju
+            SimptomVrednost( naziv == "Oticanje oko ociju" || naziv == "Glavobolja"
+                || naziv == "Zuti sekret iz nosa" || naziv == "Bol u grlu"
+                || (naziv == "Temperatura" && vrednost >= 38) 
+                || naziv == "Kasalj" ) from $simptomi,
+            init( int ukupno = 0; ),
+            action( ukupno += 1; ),
+            result( ((ukupno + (int)$specificni) / 7.0) * 100)
+        )
+    then
+        System.out.println("Sinusna infekcija: " + $prioritet);
+        $rezoner.setPrvaGrupa($bolest);
+end
+
+rule "Hipertenzija - grupa 2"
+    agenda-group "bolesti"
+    lock-on-active
+    when
+        $rezoner: Rezoner()
+        $bolest: Bolest( naziv == "Hipertenzija")
+        $pacijent: Pacijent($karton: karton)
+        $simptom: SimptomVrednost(naziv == "Visok pritisak");
+        $ukupno: Number(intValue >= 10) from accumulate(
+            Dijagnoza( Util.dodajDane(datum, 0, 6, 0) > new Date()
+                && (sadrziSimptom($simptom))) from $karton,
+            init( int ukupno = 0; )
+            action( ukupno += 1; )
+            result( ukupno )
+        )
+    then
+        System.out.println("Hipertenzija");
+        $rezoner.getDrugaGrupa().add($bolest);
+end
+
+rule "Dijabetes - grupa 2"
+    agenda-group "bolesti"
+    lock-on-active
+    when
+        $rezoner: Rezoner()
+        $bolest: Bolest( naziv == "Dijabetes")
+        $simptomi: List() from collect (SimptomVrednost())
+        $sviSimptomi: Number(intValue >= 4) from accumulate(
+            SimptomVrednost( naziv == "Cesto uriniranje" || naziv == "Gubitak telesne tezine"
+                || naziv == "Zamor" || naziv == "Mucnina i povracanje") from $simptomi,
+            init( int ukupno = 0; ),
+            action( ukupno += 1; ),
+            result( ukupno )
+        )
+    then
+        System.out.println("Dijabetes");
+        $rezoner.getDrugaGrupa().add($bolest);
+end
+
+rule "Hronicna bubrezna bolest - grupa 3"
+    agenda-group "bolesti"
+    lock-on-active
+    when
+        $rezoner: Rezoner()
+        $bolest: Bolest( naziv == "Hronicna bubrezna bolest")
+        $simptomi: List() from collect (SimptomVrednost())
+        $pacijent: Pacijent($karton: karton)
+        $opsti: Number(intValue >= 2) from accumulate(
+            SimptomVrednost( naziv == "Zamor" || naziv == "Nocturia" || naziv == "Otoci nogu i zglobova" 
+                || naziv == "Gusenje" || naziv == "Bol u grudima") from $simptomi,
+            init( int ukupno = 0; ),
+            action( ukupno += 1; ),
+            result( ukupno )
+        )
+        $hipertenzija: Number(intValue >= 0) from accumulate(
+            Dijagnoza( Util.dodajDane(datum, 0, 6, 0) > new Date()
+                && bolest.naziv == "Hipertenzija") from $karton,
+            init( int ukupno = 0; )
+            action( ukupno += 1; )
+            result( ukupno )
+        )
+        $dijabetes: Number(intValue >= 2) from accumulate(
+            Dijagnoza( bolest.naziv == "Dijabetes") from $karton,
+            init( int ukupno = 0; )
+            action( ukupno += 1; )
+            result( ukupno + (int)$hipertenzija )
+        )
+    then
+        System.out.println("Hronicna bubrezna bolest");
+        $rezoner.setTrecaGrupa($bolest);
+end
+
+rule "Akutna bubrezna povreda - grupa 3"
+    agenda-group "bolesti"
+    lock-on-active
+    when
+        $rezoner: Rezoner()
+        $bolest: Bolest( naziv == "Akutna bubrezna bolest")
+        $simptomi: List() from collect (SimptomVrednost())
+        $pacijent: Pacijent($karton: karton)
+        $simptom: SimptomVrednost(naziv == "Temperatura");
+        $lek: Lek(grupa == "ANTIBIOTIK");
+        $opsti: Number(intValue >= 2) from accumulate(
+            SimptomVrednost( naziv == "Zamor" || naziv == "Gusenje" || naziv == "Otoci nogu i zglobova" 
+                || naziv == "Dijareja") from $simptomi,
+            init( int ukupno = 0; ),
+            action( ukupno += 1; ),
+            result( ukupno )
+        )
+        $temperatura: Number(intValue >= 0) from accumulate(
+            Dijagnoza( Util.dodajDane(datum, 14, 0, 0) > new Date()
+                && (simptomi contains $simptom)) from $karton,
+            init( int ukupno = 0; )
+            action( ukupno += 1; )
+            result( ukupno )
+        )
+        $antibiotik: Number(intValue >= 0) from accumulate(
+            Dijagnoza( Util.dodajDane(datum, 21, 0, 0) > new Date()
+                && (pripisaniLekovi contains $lek)) from $karton,
+            init( int ukupno = 0; )
+            action( ukupno += 1; )
+            result( ukupno )
+        )
+        $operacija: Number(intValue >= 2) from accumulate(
+            SimptomVrednost( naziv == "Oporavak od operaicje") from $simptomi,
+            init( int ukupno = 0; )
+            action( ukupno += 1; )
+            result( ukupno + (int)$temperatura + (int)$antibiotik ) 
+        )
+    then
+        System.out.println("Akutna bubrezna bolest");
+        $rezoner.setPrvaGrupa($bolest);
+end

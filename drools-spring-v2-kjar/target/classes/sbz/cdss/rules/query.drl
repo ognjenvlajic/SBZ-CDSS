@@ -1,0 +1,41 @@
+package sbz.cdss.rules
+
+import sbz.cdss.facts.Bolest;
+import sbz.cdss.facts.Dijagnoza;
+import sbz.cdss.facts.Lek;
+import sbz.cdss.facts.Lekar;
+import sbz.cdss.facts.Pacijent;
+import sbz.cdss.facts.Rezoner;
+import sbz.cdss.facts.Simptom;
+import sbz.cdss.facts.SimptomVrednost;
+import sbz.cdss.facts.Util;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Date;
+import sbz.cdss.DTO.DTOUpitBolest;
+
+query "opsti simptomi" (Bolest $bolest)
+    $simptom: Simptom($bolest.getOpstiSimptomi().contains($simptom))
+end
+
+query "specificni simptomi" (Bolest $bolest)
+    $simptom: Simptom($bolest.getSpecificniSimptomi().contains($simptom))
+end
+
+query "upit bolesti" (DTOUpitBolest $upit)
+    $bolest: Bolest($opsti: opstiSimptomi, $specificni: specificniSimptomi)
+    $o: Number(intValue >= 0) from accumulate(
+    	$s: Simptom( pripada($opsti) ) from $upit.getSimptomi(),
+    	init( int ukupno = 0; ),
+    	action( ukupno += 1; ),
+    	result( ukupno )
+    )
+    $ukupno: Number(intValue >= 1) from accumulate(
+        $s: Simptom( pripada($specificni) ) from $upit.getSimptomi(),
+    	init( int ukupno = 0; ),
+    	action( ukupno += 1; ),
+    	result( ukupno + (int)$o )
+    )
+end

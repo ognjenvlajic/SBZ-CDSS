@@ -1,4 +1,4 @@
-<div class="row justify-content-md-center"><!-- *ngIf="uloga === 'ADMIN'"-->
+<div class="row justify-content-md-center" *ngIf="uloga === 'ADMIN'">
   <label class="col-md-12">&nbsp;</label>
   <label class="col-md-12">&nbsp;</label>
   <label class="col-md-12">&nbsp;</label>
@@ -8,6 +8,18 @@
     <li><a [routerLink]="['/bolesti']">Bolesti</a></li>
     <li><a [routerLink]="['/simptomi']">Simptomi</a></li>
     <li><a [routerLink]="['/lekovi']">Lekovi</a></li>
-    <li><a [routerLink]="['/sastojci']">Sastojci lekova</a></li>
   </ul></h4>
 </div>
+
+<div class="row justify-content-md-center" *ngIf="uloga === 'LEKAR'">
+  <label class="col-md-12">&nbsp;</label>
+  <label class="col-md-12">&nbsp;</label>
+  <label class="col-md-12">&nbsp;</label>
+  <h4><ul id="opcije">
+    <li><a [routerLink]="['/pacijentLekar']">Pacijent</a></li>
+    <li><a [routerLink]="['/dijagnoza']">Dijangoza</a></li>
+    <li><a [routerLink]="['/monitoring']">Monitoring</a></li>
+    <li><a [routerLink]="['/izvestaj']">izvestaj</a></li>
+  </ul></h4>
+</div>
+

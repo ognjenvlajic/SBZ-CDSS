@@ -1,0 +1,26 @@
+<ul class="pagination">
+  <li class="page-item">
+    <button class="btn btn-outline-primary" [disabled]="pager.trenutnaStrana === 1" 
+    (click)="promeniStranu(1)">&lt;&lt;</button>
+  </li>
+  &nbsp;
+  <li class="page-item">
+    <button class="btn btn-outline-primary" [disabled]="pager.trenutnaStrana === 1" 
+    (click)="promeniStranu(pager.trenutnaStrana - 1)">&lt;</button>
+  </li> 
+  &nbsp;
+  <li class="page-item" *ngFor="let strana of pager.strane">
+    <button class="btn" [class.btn-primary]="strana === pager.trenutnaStrana" [class.btn-outline-primary]="strana !== pager.trenutnaStrana"
+    (click)="promeniStranu(strana)">{{strana}}</button>
+  </li>
+  &nbsp;
+  <li class="page-item">
+    <button class="btn btn-outline-primary" [disabled]="pager.trenutnaStrana === pager.ukupnoStrana" 
+    (click)="promeniStranu(pager.trenutnaStrana + 1)" >&gt;</button>
+  </li>
+  &nbsp;
+  <li class="page-item">
+    <button class="btn btn-outline-primary" [disabled]="pager.trenutnaStrana === pager.ukupnoStrana" 
+    (click)="promeniStranu(pager.ukupnoStrana)">&gt;&gt;</button>
+  </li> 
+</ul>

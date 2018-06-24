@@ -1,0 +1,51 @@
+package sbz.cdss.rules
+
+import sbz.cdss.facts.Bolest;
+import sbz.cdss.facts.Dijagnoza;
+import sbz.cdss.facts.Lek;
+import sbz.cdss.facts.Lekar;
+import sbz.cdss.facts.Pacijent;
+import sbz.cdss.facts.Sastojak;
+import sbz.cdss.facts.Simptom;
+import sbz.cdss.facts.SimptomVrednost;
+import sbz.cdss.facts.Validacija;
+import sbz.cdss.facts.Util;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Date;
+
+
+rule "test-alergije"
+   agenda-group "alergije"
+   when
+       $p: Pacijent()
+   then
+       System.out.println("test");
+end
+
+rule "Alergija na lekove"
+   agenda-group "alergije"
+   when
+        $validacija: Validacija()
+        $dijagnoza: Dijagnoza($pripisaniLekovi: pripisaniLekovi)
+        $lek: Lek() from $pripisaniLekovi
+        $pacijent: Pacijent(alergicanNaLek($lek))
+   then
+        System.out.println("Lek alergija: " + $lek.getNaziv());
+        $validacija.getLekovi().add($lek.getNaziv());
+end
+       
+
+rule "Alergija na sastojke"
+    agenda-group "alergije"
+    lock-on-active
+    when
+        $validacija: Validacija()
+        $dijagnoza: Dijagnoza($pripisaniLekovi: pripisaniLekovi)
+        $lek: Lek($sastojci: sastojci) from $pripisaniLekovi
+        $sastojak: Sastojak() from $sastojci
+        $pacijent: Pacijent(alergicanNaSastojak($sastojak))
+    then
+    	System.out.println("Sastojak alergija: " + $sastojak.getNaziv() + "(" + $lek.getNaziv() + ")");
+    	$validacija.getSastojci().add($sastojak.getNaziv() + "(" + $lek.getNaziv() + ")");
+end

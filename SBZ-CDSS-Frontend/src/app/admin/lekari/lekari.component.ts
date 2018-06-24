@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
     styleUrls: ['./lekari.component.scss']
 })
 export class LekariComponent implements OnInit {
+    
     funkcionalnost: string;
 
     constructor(
